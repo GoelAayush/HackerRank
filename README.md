@@ -58,6 +58,54 @@ WHERE LEFT(CITY,1) IN ('a','e','i','o','u')
 AND RIGHT(CITY,1) IN ('a','e','i','o','u')
 GROUP BY CITY;
 
+# Weather Observation Station 9
+SELECT CITY FROM STATION 
+WHERE LEFT(CITY,1) NOT IN ('a','e','i','o','u')
+GROUP BY CITY;
+
+# Weather Observation Station 10
+SELECT CITY FROM STATION 
+WHERE RIGHT(CITY,1) NOT IN ('a','e','i','o','u')
+GROUP BY CITY;
+
+# Weather Observation Station 11
+SELECT CITY FROM STATION 
+WHERE LEFT(CITY,1) NOT IN ('a','e','i','o','u')
+OR RIGHT(CITY,1) NOT IN ('a','e','i','o','u')
+GROUP BY CITY;
+
+# Weather Observation Station 12
+SELECT CITY FROM STATION 
+WHERE LEFT(CITY,1) NOT IN ('a','e','i','o','u')
+AND RIGHT(CITY,1) NOT IN ('a','e','i','o','u')
+GROUP BY CITY;
+
+# Higher Than 75 Marks
+SELECT Name FROM STUDENTS
+WHERE Marks > 75
+ORDER BY RIGHT(Name,3), ID;
+
+# Employee Names
+SELECT name FROM Employee
+ORDER BY name;
+
+# Employee Salaries
+SELECT name FROM Employee WHERE salary > 2000
+AND months < 10
+ORDER BY employee_id;
+
+# Type of Triangle
+SELECT CASE
+WHEN A + B <= C OR B+C <= A OR A+C <= B THEN 'Not A Triangle'
+WHEN A=B AND A=C THEN 'Equilateral'
+WHEN A=B OR B=C OR A=C THEN 'Isosceles'
+ELSE 'Scalene'
+END AS Type_of_Triangle
+FROM TRIANGLES
+
+
+
+
 
 
 
