@@ -1,1 +1,1 @@
-# HackerRank
+# HackerRank SQL Answers
