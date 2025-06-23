@@ -25,6 +25,10 @@ SELECT NAME FROM CITY WHERE COUNTRYCODE = "JPN";
 # Weather Observation Station 1
 SELECT CITY, STATE FROM STATION;
 
+# Weather Observation Station 2
+SELECT ROUND(SUM(LAT_N),2) AS Latitude, ROUND(SUM(LONG_W),2) AS Longitude
+FROM STATION;
+
 # Weather Observation Station 3
 SELECT CITY FROM STATION WHERE ID % 2 = 0
 GROUP BY CITY
@@ -80,6 +84,36 @@ WHERE LEFT(CITY,1) NOT IN ('a','e','i','o','u')
 AND RIGHT(CITY,1) NOT IN ('a','e','i','o','u')
 GROUP BY CITY;
 
+# Weather Observation Station 13
+SELECT ROUND(SUM(LAT_N),4) AS Latitude
+FROM STATION
+WHERE LAT_N BETWEEN 38.7880 AND 137.2345;
+
+# Weather Observation Station 14
+SELECT ROUND(MAX(LAT_N),4)
+FROM STATION
+WHERE LAT_N < 137.2345;
+
+# Weather Observation Station 15
+SELECT ROUND(LONG_W,4) AS Longitude 
+FROM STATION
+WHERE LAT_N = (SELECT MAX(LAT_N) 
+               FROM STATION
+              WHERE LAT_N < 137.2345
+              ); 
+
+# Weather Observation Station 16
+SELECT ROUND(MIN(LAT_N),4) AS Latitude
+FROM STATION
+WHERE LAT_N > 38.7780;
+
+# Weather Observation Station 17
+SELECT ROUND(LONG_W,4) AS Longitude
+FROM STATION
+WHERE LAT_N = (SELECT MIN(LAT_N) FROM STATION
+              WHERE LAT_N > 38.7780
+              );
+
 # Higher Than 75 Marks
 SELECT Name FROM STUDENTS
 WHERE Marks > 75
@@ -122,6 +156,39 @@ FROM CITY;
 SELECT CEIL(AVG(SALARY) - AVG(CAST(REPLACE(Salary,'0','')AS UNSIGNED)))
 FROM EMPLOYEES;
 
+# Top Earners
+SELECT CONCAT(MAX(Earning),' ', COUNT(Earning))
+FROM (
+SELECT (salary * months) AS Earning 
+FROM Employee
+) AS Final
+WHERE Earning = (SELECT MAX(salary * months) FROM Employee);
+
+# Population Census
+SELECT SUM(a.POPULATION) 
+FROM CITY AS a
+LEFT JOIN COUNTRY AS b
+ON a.COUNTRYCODE = b.CODE
+WHERE b.CONTINENT = 'Asia';
+
+# African Cities
+SELECT a.NAME
+FROM CITY AS a
+LEFT JOIN COUNTRY AS b
+ON a.COUNTRYCODE = b.CODE
+WHERE CONTINENT = 'Africa';
+
+# Average Population of Each Continent
+SELECT b.CONTINENT, FLOOR(AVG(a.POPULATION)) AS POP
+FROM COUNTRY AS b
+JOIN CITY AS a
+ON b.CODE = a.COUNTRYCODE
+GROUP BY b.CONTINENT;
+
+# Revising Aggregations - The Sum Function
+SELECT SUM(POPULATION) 
+FROM CITY
+WHERE District = 'California';
 
 
 
