@@ -9,3 +9,37 @@ SELECT
 FROM BST
 ORDER BY N;
 
+# Weather Observation Station 20
+WITH Ordered AS ( 
+SELECT LAT_N, ROW_NUMBER()OVER(ORDER BY LAT_N) AS row_num,
+COUNT(*) OVER() AS total_rows
+FROM STATION)
+
+SELECT ROUND(AVG(LAT_N),4) AS Latitude
+FROM Ordered
+WHERE row_num IN (FLOOR((total_rows+1)/2),
+(total_rows+2)/2
+);
+
+# Top Competitors
+SELECT 
+    h.hacker_id, 
+    h.name
+FROM Hackers h
+JOIN (
+    SELECT 
+        s.hacker_id, 
+        COUNT(DISTINCT c.challenge_id) AS full_score_count
+    FROM Submissions s
+    JOIN Challenges c ON s.challenge_id = c.challenge_id
+    JOIN Difficulty d ON c.difficulty_level = d.difficulty_level
+    WHERE s.score = d.score
+    GROUP BY s.hacker_id
+    HAVING COUNT(DISTINCT c.challenge_id) > 1
+) AS fs ON h.hacker_id = fs.hacker_id
+ORDER BY 
+    fs.full_score_count DESC, 
+    h.hacker_id ASC;
+
+
+
